@@ -38,8 +38,6 @@ const router = createRouter({
       name: 'NoteDetail',
       component: () => import('@/views/NoteDetail.vue')
     }
-
-
   ],
 })
 

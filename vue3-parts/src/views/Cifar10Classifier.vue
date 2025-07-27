@@ -111,17 +111,8 @@
     </div>
 
     <!-- 页脚 -->
-    <footer class="app-footer">
-      <div class="footer-content">
-        <div class="footer-logo">
-          <img src="../assets/images/logo.png" alt="Logo" width="40">
-          <span>AI视觉实验室</span>
-        </div>
-        <div class="copyright">
-          © 2023 AI视觉实验室 版权所有
-        </div>
-      </div>
-    </footer>
+    <Footer />
+
   </div>
 </template>
 
@@ -130,6 +121,7 @@ import { ref } from 'vue'
 import { UploadFilled, MagicStick } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import axios from 'axios'
+import Footer from "@/components/Footer.vue";
 
 const imagePreview = ref(null)
 const result = ref(null)
