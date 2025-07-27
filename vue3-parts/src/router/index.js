@@ -29,6 +29,11 @@ const router = createRouter({
       component: () => import('@/views/CnnMnist.vue')
     },
     {
+      path:'/cifar10-classifier',
+      name:'cifar10-classifier',
+      component: () => import('@/views/Cifar10Classifier.vue')
+    },
+    {
       path: '/note/:id',
       name: 'NoteDetail',
       component: () => import('@/views/NoteDetail.vue')

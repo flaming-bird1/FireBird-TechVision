@@ -3,7 +3,7 @@
     <!-- 顶部Logo区域 -->
     <div class="sidebar-logo">
       <div class="logo-wrapper">
-        <img src="../assets/images/logo.png" alt="Logo" class="logo-img" />
+        <img src="../assets/images/logo.png" alt="Logo" class="logo-img"/>
         <span class="logo-text">AI Vision Lab</span>
       </div>
     </div>
@@ -21,49 +21,76 @@
       <!-- 我的项目 -->
       <el-sub-menu index="my-projects">
         <template #title>
-          <el-icon><Folder /></el-icon>
+          <el-icon>
+            <Folder/>
+          </el-icon>
           <span>我的项目</span>
         </template>
-        <!-- 404页面 -->
-        <el-menu-item index="/404" route="/404">
-          <el-icon><Warning /></el-icon>
-          <template #title>
-            <span>404测试页</span>
-            <el-tag size="small" effect="dark" type="warning" class="menu-tag">测试</el-tag>
-          </template>
-        </el-menu-item>
-
         <!-- 爱心页面 -->
         <el-menu-item index="/love-heart" route="/love-heart">
-          <el-icon class="heart-icon"><StarFilled /></el-icon>
+          <el-icon class="heart-icon">
+            <StarFilled/>
+          </el-icon>
           <template #title>
             <span>爱心特效</span>
             <el-tag size="small" effect="dark" type="danger" class="menu-tag">New</el-tag>
           </template>
         </el-menu-item>
 
+        <!-- 404页面 -->
+        <el-menu-item index="/404" route="/404">
+          <el-icon>
+            <Warning/>
+          </el-icon>
+          <template #title>
+            <span>404测试页</span>
+            <el-tag size="small" effect="dark" type="warning" class="menu-tag">测试</el-tag>
+          </template>
+        </el-menu-item>
+
+
         <!-- 手写数字识别 -->
         <el-menu-item index="/cnn-hand-write-number" route="/cnn-hand-write-number">
-          <el-icon><Cpu /></el-icon>
+          <el-icon>
+            <Cpu/>
+          </el-icon>
           <template #title>
             <span>数字识别</span>
             <el-tag size="small" effect="dark" type="success" class="menu-tag">AI</el-tag>
           </template>
         </el-menu-item>
+
+        <!-- CIFAR10分类菜单项 -->
+        <el-menu-item index="/cifar10-classifier" route="/cifar10-classifier">
+          <el-icon>
+            <Picture/> <!-- 使用Element Plus的图片图标，或自定义Cifar10图标 -->
+          </el-icon>
+          <template #title>
+            <span>CIFAR10分类</span>
+            <el-tag size="small" effect="dark" type="success" class="menu-tag">AI</el-tag>
+          </template>
+        </el-menu-item>
+
       </el-sub-menu>
 
       <!-- 学习资源 -->
       <el-sub-menu index="learning-resources">
         <template #title>
-          <el-icon><Notebook /></el-icon>
+          <el-icon>
+            <Notebook/>
+          </el-icon>
           <span>学习资源</span>
         </template>
         <el-menu-item index="/tutorials">
-          <el-icon><Document /></el-icon>
+          <el-icon>
+            <Document/>
+          </el-icon>
           <span>教程文档</span>
         </el-menu-item>
         <el-menu-item index="/cheatsheets">
-          <el-icon><Memo /></el-icon>
+          <el-icon>
+            <Memo/>
+          </el-icon>
           <span>速查表</span>
         </el-menu-item>
       </el-sub-menu>
@@ -72,7 +99,7 @@
     <!-- 折叠按钮 -->
     <div class="collapse-btn" @click="toggleCollapse">
       <el-icon>
-        <component :is="isCollapse ? Expand : Fold" />
+        <component :is="isCollapse ? Expand : Fold"/>
       </el-icon>
       <span v-show="!isCollapse">收起菜单</span>
     </div>
@@ -80,8 +107,8 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { useRoute } from 'vue-router'
+import {ref, computed} from 'vue'
+import {useRoute} from 'vue-router'
 import {
   Folder,
   Warning,
@@ -91,11 +118,16 @@ import {
   Document,
   Memo,
   Fold,
-  Expand
+  Expand,
+  Picture, // 新增导入的图标
 } from '@element-plus/icons-vue'
 
 const route = useRoute()
 const isCollapse = ref(false)
+
+// 如果要用自定义Cifar10图标，可以这样定义：
+// import { Cifar10 } from '@/assets/icons'
+// 需要在assets/icons中定义对应的SVG图标组件
 
 // 自动根据当前路由设置激活项
 const activeIndex = computed(() => {
