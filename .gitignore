@@ -53,6 +53,22 @@ Thumbs.db
 **/images/**/*.webp
 !**/images/README.md  # 保留 README
 
+
+# ========== PyTorch专属 ==========
+# 模型文件（保留小型检查点）
+!**/checkpoints/small_*.pth  # 多层级保留
+**/*.pt
+**/*.bin
+**/*.onnx
+# 忽略所有层级的vgg16模型文件
+**/vgg16_*.pth
+**/*vgg16*.pt
+
+# 训练日志
+**/logs/
+**/*.events.*
+**/*.tfevents.*
+
 # --- 其他临时文件 ---
 **/.DS_Store
 **/npm-debug.log*
