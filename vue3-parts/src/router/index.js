@@ -6,7 +6,7 @@ const router = createRouter({
     // 重定向 / 到 /home
     {
       path: '/',
-      redirect: '/home'
+      redirect: '/login'
     },
     {
       path: '/home',
@@ -42,7 +42,17 @@ const router = createRouter({
       path: '/note/:id',
       name: 'NoteDetail',
       component: () => import('@/views/NoteDetail.vue')
-    }
+    },
+    {
+      path:'/login',
+      name:'Login',
+      component: () => import('@/views/Login.vue')
+    },
+      {
+        path:'/register',
+        name:'Register',
+        component: () => import('@/views/Register.vue')
+      },
   ],
 })
 

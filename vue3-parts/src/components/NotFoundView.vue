@@ -11,7 +11,7 @@
       <div class="tail"></div>
     </div>
     <div class="well">
-      <router-link class="home-btn" to="/">回到首页</router-link>
+      <router-link class="home-btn" to="/home">回到首页</router-link>
     </div>
     <div class="text-box">
       <h1>404</h1>

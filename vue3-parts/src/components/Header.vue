@@ -57,7 +57,7 @@
               <el-dropdown-menu>
                 <el-dropdown-item>个人中心</el-dropdown-item>
                 <el-dropdown-item>设置</el-dropdown-item>
-                <el-dropdown-item divided>退出登录</el-dropdown-item>
+                <el-dropdown-item divided @click="gotoLogin">退出登录</el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
@@ -86,15 +86,16 @@ import {
   Moon,
   ArrowDown
 } from '@element-plus/icons-vue'
+import avatarImage from '@/assets/images/烈焰飞鸟.png'
 
 const router = useRouter()
 
 // 导航菜单项
 const navItems = ref([
   { path: '/home', name: '首页' },
-  { path: '/components', name: '组件', tag: { type: 'success', text: 'New' } },
+  { path: '/blogs', name: '博客', tag: { type: 'success', text: 'New' } },
   { path: '/templates', name: '模板' },
-  { path: '/docs', name: '文档' }
+  { path: '/notes', name: '笔记' }
 ])
 
 // 搜索查询
@@ -102,7 +103,7 @@ const searchQuery = ref('')
 
 // 用户信息
 const userName = ref('管理员')
-const userAvatar = ref('https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png')
+const userAvatar = avatarImage
 
 // 主题模式
 const darkMode = ref(false)
@@ -114,6 +115,10 @@ const goHome = () => {
 const toggleTheme = (val) => {
   // 这里实现主题切换逻辑
   document.documentElement.classList.toggle('dark', val)
+}
+
+ const gotoLogin = () => {
+  router.push('/login')
 }
 </script>
 
