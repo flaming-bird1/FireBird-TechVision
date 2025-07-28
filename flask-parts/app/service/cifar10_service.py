@@ -2,7 +2,8 @@ import torch
 import torchvision.transforms as transforms
 from PIL import Image
 import io
-from app.models import CIFAR10Model
+from app.models.models import CIFAR10Model
+
 
 class CIFAR10Predictor:
     def __init__(self, model_path):

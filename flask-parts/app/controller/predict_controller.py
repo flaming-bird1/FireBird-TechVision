@@ -1,7 +1,7 @@
 from flask import request, jsonify
-from app import app
-from app.services.mnist_service import MNISTPredictor
-from app.services.cifar10_service import CIFAR10Predictor
+from app import app, db
+from app.service.mnist_service import MNISTPredictor
+from app.service.cifar10_service import CIFAR10Predictor
 
 
 class Result:
@@ -53,3 +53,13 @@ def cifar10_predict():
         return jsonify(Result(data=result).to_dict())
     except Exception as e:
         return jsonify(Result(500, f'预测失败: {str(e)}').to_dict())
+
+
+# 测试数据库连接
+@app.route('/test_db', methods=['GET'])
+def db_test():
+    try:
+        db.engine.connect()  # 直接使用全局db对象
+        return "MySQL 连接成功！"
+    except Exception as e:
+        return f"MySQL 连接失败: {str(e)}"

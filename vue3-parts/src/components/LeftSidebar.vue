@@ -9,92 +9,112 @@
     </div>
 
     <!-- 导航菜单 -->
-    <el-menu
-        :default-active="activeIndex"
-        class="sidebar-menu"
-        :router="true"
-        active-text-color="#409EFF"
-        background-color="#304156"
-        text-color="#b8c7ce"
-        :collapse="isCollapse"
-    >
-      <!-- 我的项目 -->
-      <el-sub-menu index="my-projects">
-        <template #title>
-          <el-icon>
-            <Folder/>
-          </el-icon>
-          <span>我的项目</span>
-        </template>
-        <!-- 爱心页面 -->
-        <el-menu-item index="/love-heart" route="/love-heart">
-          <el-icon class="heart-icon">
-            <StarFilled/>
-          </el-icon>
+    <div class="menu-scroll-container">
+      <el-menu
+          :default-active="activeIndex"
+          class="sidebar-menu"
+          :router="true"
+          active-text-color="#409EFF"
+          background-color="#304156"
+          text-color="#b8c7ce"
+          :collapse="isCollapse"
+      >
+        <!-- 我的项目 -->
+        <el-sub-menu index="my-projects">
           <template #title>
-            <span>爱心特效</span>
-            <el-tag size="small" effect="dark" type="danger" class="menu-tag">New</el-tag>
+            <el-icon>
+              <Folder/>
+            </el-icon>
+            <span>我的项目</span>
           </template>
-        </el-menu-item>
+          <!-- 爱心页面 -->
+          <el-menu-item index="/love-heart" route="/love-heart" class="gomoku-menu-item">
+            <el-icon class="heart-icon">
+              <StarFilled/>
+            </el-icon>
+            <template #title>
+              <span>爱心特效</span>
+              <el-tag size="small" effect="dark" type="danger" class="menu-tag">New</el-tag>
+            </template>
+          </el-menu-item>
 
-        <!-- 404页面 -->
-        <el-menu-item index="/404" route="/404">
-          <el-icon>
-            <Warning/>
-          </el-icon>
+          <!-- 五子棋 -->
+          <el-menu-item
+              index="/gomoku-game"
+              route="/gomoku-game"
+              class="gomoku-menu-item"
+          >
+            <el-icon class="five-icon">
+              <svg viewBox="0 0 24 24" width="1em" height="1em">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" fill="currentColor"/>
+                <path d="M8 12c0 2.21 1.79 4 4 4s4-1.79 4-4-1.79-4-4-4-4 1.79-4 4zm4-2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z" fill="currentColor"/>
+              </svg>
+            </el-icon>
+            <template #title>
+              <span>五子棋</span>
+              <el-tag size="small" effect="dark" type="info" class="menu-tag">策略</el-tag>
+            </template>
+          </el-menu-item>
+
+          <!-- 404页面 -->
+          <el-menu-item index="/404" route="/404" class="gomoku-menu-item">
+            <el-icon>
+              <Warning/>
+            </el-icon>
+            <template #title>
+              <span>404测试页</span>
+              <el-tag size="small" effect="dark" type="warning" class="menu-tag">测试</el-tag>
+            </template>
+          </el-menu-item>
+
+
+          <!-- 手写数字识别 -->
+          <el-menu-item index="/cnn-hand-write-number" route="/cnn-hand-write-number" class="gomoku-menu-item">
+            <el-icon>
+              <Cpu/>
+            </el-icon>
+            <template #title>
+              <span>数字识别</span>
+              <el-tag size="small" effect="dark" type="success" class="menu-tag">AI</el-tag>
+            </template>
+          </el-menu-item>
+
+          <!-- CIFAR10分类菜单项 -->
+          <el-menu-item index="/cifar10-classifier" route="/cifar10-classifier" class="gomoku-menu-item">
+            <el-icon>
+              <Picture/>
+            </el-icon>
+            <template #title>
+              <span>CIFAR10分类</span>
+              <el-tag size="small" effect="dark" type="success" class="menu-tag">AI</el-tag>
+            </template>
+          </el-menu-item>
+
+        </el-sub-menu>
+
+        <!-- 学习资源 -->
+        <el-sub-menu index="learning-resources">
           <template #title>
-            <span>404测试页</span>
-            <el-tag size="small" effect="dark" type="warning" class="menu-tag">测试</el-tag>
+            <el-icon>
+              <Notebook/>
+            </el-icon>
+            <span>学习资源</span>
           </template>
-        </el-menu-item>
-
-
-        <!-- 手写数字识别 -->
-        <el-menu-item index="/cnn-hand-write-number" route="/cnn-hand-write-number">
-          <el-icon>
-            <Cpu/>
-          </el-icon>
-          <template #title>
-            <span>数字识别</span>
-            <el-tag size="small" effect="dark" type="success" class="menu-tag">AI</el-tag>
-          </template>
-        </el-menu-item>
-
-        <!-- CIFAR10分类菜单项 -->
-        <el-menu-item index="/cifar10-classifier" route="/cifar10-classifier">
-          <el-icon>
-            <Picture/> <!-- 使用Element Plus的图片图标，或自定义Cifar10图标 -->
-          </el-icon>
-          <template #title>
-            <span>CIFAR10分类</span>
-            <el-tag size="small" effect="dark" type="success" class="menu-tag">AI</el-tag>
-          </template>
-        </el-menu-item>
-
-      </el-sub-menu>
-
-      <!-- 学习资源 -->
-      <el-sub-menu index="learning-resources">
-        <template #title>
-          <el-icon>
-            <Notebook/>
-          </el-icon>
-          <span>学习资源</span>
-        </template>
-        <el-menu-item index="/tutorials">
-          <el-icon>
-            <Document/>
-          </el-icon>
-          <span>教程文档</span>
-        </el-menu-item>
-        <el-menu-item index="/cheatsheets">
-          <el-icon>
-            <Memo/>
-          </el-icon>
-          <span>速查表</span>
-        </el-menu-item>
-      </el-sub-menu>
-    </el-menu>
+          <el-menu-item index="/tutorials">
+            <el-icon>
+              <Document/>
+            </el-icon>
+            <span>教程文档</span>
+          </el-menu-item>
+          <el-menu-item index="/cheatsheets">
+            <el-icon>
+              <Memo/>
+            </el-icon>
+            <span>速查表</span>
+          </el-menu-item>
+        </el-sub-menu>
+      </el-menu>
+    </div>
 
     <!-- 折叠按钮 -->
     <div class="collapse-btn" @click="toggleCollapse">
@@ -119,17 +139,12 @@ import {
   Memo,
   Fold,
   Expand,
-  Picture, // 新增导入的图标
+  Picture,
 } from '@element-plus/icons-vue'
 
 const route = useRoute()
 const isCollapse = ref(false)
 
-// 如果要用自定义Cifar10图标，可以这样定义：
-// import { Cifar10 } from '@/assets/icons'
-// 需要在assets/icons中定义对应的SVG图标组件
-
-// 自动根据当前路由设置激活项
 const activeIndex = computed(() => {
   return route.path
 })
@@ -184,12 +199,18 @@ const toggleCollapse = () => {
   white-space: nowrap;
 }
 
-.sidebar-menu {
+.menu-scroll-container {
   flex: 1;
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: auto;
+  width: 100%;
+}
+
+.sidebar-menu {
+  min-width: 200px;
+  width: 100%;
   border-right: none !important;
-  width: 100% !important;
+  overflow: visible;
 }
 
 .el-menu {
@@ -205,7 +226,8 @@ const toggleCollapse = () => {
   border-radius: 4px;
   display: flex;
   align-items: center;
-  width: calc(100% - 16px);
+  min-width: calc(100% - 16px);
+  white-space: nowrap;
 }
 
 .el-menu-item:hover {
@@ -298,17 +320,17 @@ const toggleCollapse = () => {
   padding: 0 10px;
 }
 
-.sidebar-menu::-webkit-scrollbar {
+.menu-scroll-container::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
-.sidebar-menu::-webkit-scrollbar-thumb {
+.menu-scroll-container::-webkit-scrollbar-thumb {
   background-color: rgba(255, 255, 255, 0.2);
   border-radius: 3px;
 }
 
-.sidebar-menu::-webkit-scrollbar-track {
+.menu-scroll-container::-webkit-scrollbar-track {
   background-color: transparent;
 }
 
@@ -338,5 +360,51 @@ const toggleCollapse = () => {
 
 .el-menu--collapse .el-sub-menu__title {
   padding-left: 20px !important;
+}
+
+/* 横向滚动提示 */
+.menu-scroll-container {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.menu-scroll-container:hover {
+  overflow-x: auto;
+}
+
+/* 防止折叠模式下出现滚动 */
+.el-menu--collapse + .menu-scroll-container {
+  overflow-x: hidden !important;
+}
+
+/* 五子棋图标特殊样式 */
+.five-icon {
+  color: #9c27b0; /* 紫色主题 */
+  transition: all 0.3s;
+}
+
+.gomoku-menu-item:hover .five-icon {
+  transform: rotate(15deg) scale(1.1);
+  color: #7b1fa2;
+}
+
+/* 五子棋菜单项动画 */
+.gomoku-menu-item {
+  position: relative;
+  overflow: hidden;
+}
+.gomoku-menu-item::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #9c27b0, #2196f3);
+  transition: all 0.3s;
+}
+.gomoku-menu-item:hover::after {
+  left: 0;
+  width: 100%;
 }
 </style>

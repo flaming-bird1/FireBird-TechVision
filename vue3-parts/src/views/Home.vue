@@ -75,15 +75,17 @@
               </div>
               <p class="project-desc">{{ project.description }}</p>
               <div class="project-footer">
-                <el-tag
-                    v-for="tag in project.tags"
-                    :key="tag"
-                    size="small"
-                    :type="tagTypes[tag] || 'info'"
-                >
-                  {{ tag }}
-                </el-tag>
-                <span class="project-date">{{ project.date }}</span>
+                <div class="project-tags">
+                  <el-tag
+                      v-for="tag in project.tags"
+                      :key="tag"
+                      size="small"
+                      :type="tagTypes[tag] || 'info'"
+                  >
+                    {{ tag }}
+                  </el-tag>
+                </div>
+                <div class="project-date">{{ project.date }}</div>
               </div>
             </el-card>
           </div>
@@ -161,7 +163,7 @@ const projects = [
     description: '使用vue3+element-plus开发了一个具有404页面效果的网站',
     icon: Warning,
     iconColor: '#67C23A',
-    tags: ['vue3', 'element-plus', '前端'],
+    tags: ['前端','vue3', 'element-plus'],
     date: '2025-7-15'
   },
   {
@@ -188,22 +190,19 @@ const studyNotes = [
     summary: '记录了机器学习的一些基础概念和算法，以及如何使用Python实现这些算法...',
     date: '2025-7-5'
   },
-
 ]
 
 const tagTypes = {
   '深度学习': 'danger',
+  '机器学习': 'danger',
   '计算机视觉': 'danger',
   'Python': '',
-  'NLP': 'success',
   '人工智能': 'success',
   'PyTorch': '',
-  'WebGL': 'warning',
   '前端': 'warning',
   'JavaScript': '',
   '算法': '',
   '可视化': 'info',
-  'D3.js': ''
 }
 
 const viewProject = (id) => {
@@ -337,6 +336,7 @@ const viewNote = (id) => {
   border-radius: 8px;
   cursor: pointer;
   transition: transform 0.3s, box-shadow 0.3s;
+  padding-bottom: 16px;
 
   &:hover {
     transform: translateY(-5px);
@@ -364,17 +364,21 @@ const viewNote = (id) => {
 
   .project-footer {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    gap: 8px;
     margin-top: 12px;
 
-    .el-tag {
-      margin-right: 6px;
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
     }
 
     .project-date {
       font-size: 0.8rem;
       color: #909399;
+      text-align: right;
+      margin-top: 4px;
     }
   }
 }

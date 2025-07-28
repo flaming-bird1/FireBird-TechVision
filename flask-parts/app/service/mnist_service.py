@@ -2,7 +2,8 @@ import torch
 import torchvision.transforms as transforms
 from PIL import Image
 import io
-from app.models import MNISTModel
+from app.models.models import MNISTModel
+
 
 class MNISTPredictor:
     def __init__(self, model_path):

@@ -11,7 +11,7 @@
           >
           <div>
             <h1>手写数字识别系统</h1>
-            <p class="subtitle">基于深度学习的高精度识别模型，准确率达99.24%</p>
+            <p class="subtitle">基于CNN卷积神经网络手写数字图像识别模型</p>
           </div>
         </div>
       </div>
