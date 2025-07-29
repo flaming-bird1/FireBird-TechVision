@@ -4,7 +4,7 @@
     <div class="footer-content">
       <div class="footer-logo">
         <img src="../assets/images/logo.png" alt="Logo" width="40">
-        <span>烈焰飞鸟·梦工厂</span>
+        <span>焰翼码栈</span>
       </div>
       <div class="footer-links">
         <a href="#">关于我们</a>
@@ -13,7 +13,7 @@
         <a href="#">联系方式</a>
       </div>
       <div class="copyright">
-        © 2025 烈焰飞鸟·梦工厂 版权所有
+        © 2025 焰翼码栈 版权所有
       </div>
     </div>
   </footer>

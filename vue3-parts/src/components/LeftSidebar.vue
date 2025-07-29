@@ -4,7 +4,7 @@
     <div class="sidebar-logo">
       <div class="logo-wrapper">
         <img src="../assets/images/logo.png" alt="Logo" class="logo-img"/>
-        <span class="logo-text">AI Vision Lab</span>
+<!--        <span class="logo-text">FlameWing CodeForge</span>-->
       </div>
     </div>
 
