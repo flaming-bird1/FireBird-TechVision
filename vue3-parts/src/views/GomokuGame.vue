@@ -37,7 +37,11 @@
                       v-for="(col, colIndex) in boardSize"
                       :key="colIndex"
                       class="cell"
-                      :class="{ 'black': board[rowIndex][colIndex] === 'black', 'white': board[rowIndex][colIndex] === 'white' }"
+                      :class="{
+                        'black': board[rowIndex][colIndex] === 'black',
+                        'white': board[rowIndex][colIndex] === 'white',
+                        'last-move': lastMove && lastMove.row === rowIndex && lastMove.col === colIndex
+                      }"
                       @click="onCellClick(rowIndex, colIndex)"
                   ></div>
                 </div>
@@ -86,6 +90,7 @@ const gameOver = ref(false)
 const statusText = ref('黑棋回合')
 const statusType = ref('info')
 const gameBoard = ref(null)
+const lastMove = ref(null) // 新增：记录最后一步棋的位置
 
 const AI_DEPTH = 4
 const WIN_SCORE = 10000000
@@ -107,11 +112,13 @@ const initBoard = () => {
   gameOver.value = false
   statusText.value = '黑棋回合'
   statusType.value = 'info'
+  lastMove.value = null // 重置最后一步棋
 }
 
 // 放置棋子
 const placePiece = (row, col, player) => {
   board.value[row][col] = player
+  lastMove.value = { row, col, player } // 记录最后一步棋
   playSoundOnline()
 }
 
@@ -582,6 +589,36 @@ h1 {
 .cell.white::after {
   background-color: #fff;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* 新增：最后一步棋的高亮样式 */
+.cell.last-move::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30%;
+  height: 30%;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 0, 0.7);
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.3);
+    opacity: 0.4;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.7;
+  }
 }
 
 .game-controls {

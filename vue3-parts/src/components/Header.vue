@@ -77,18 +77,18 @@
 
         <!-- 音乐播放按钮 -->
         <el-button @click="toggleMusic" class="music-button">
-          <el-icon v-if="isPlaying">
+          <el-icon v-if="playerReady && musicPlayerRef.isPlaying">
             <svg class="icon" viewBox="0 0 1024 1024" width="200"
                  height="200">
               <path
-                  d="M512.449956 124.087882c52.394883 0 103.189923 10.298994 150.985255 30.497022 46.195489 19.498096 87.691436 47.495362 123.287961 83.191876 35.696514 35.696514 63.59379 77.192462 83.191875 123.28796 20.198028 47.795332 30.497022 98.590372 30.497022 150.985255s-10.298994 103.189923-30.497022 150.985255c-19.498096 46.195489-47.495362 87.691436-83.191875 123.287961-35.696514 35.696514-77.192462 63.59379-123.287961 83.191875-47.795332 20.198028-98.590372 30.497022-150.985255 30.497022s-103.189923-10.298994-150.985255-30.497022c-46.195489-19.498096-87.691436-47.495362-123.28796-83.191875-35.696514-35.696514-63.59379-77.192462-83.191876-123.287961-20.198028-47.795332-30.497022-98.590372-30.497022-150.985255s10.298994-103.189923 30.497022-150.985255c19.498096-46.195489 47.495362-87.691436 83.191876-123.28796 35.696514-35.696514 77.192462-63.59379 123.28796-83.191876 47.795332-20.198028 98.590372-30.497022 150.985255-30.497022m0-59.994141c-247.375842 0-447.956254 200.580412-447.956254 447.956254s200.580412 447.956254 447.956254 447.956254 447.956254-200.580412 447.956254-447.956254-200.580412-447.956254-447.956254-447.956254z"
+                  d="M512.449956 124.087882c52.394883 0 103.189923 10.298994 150.985255 30.497022 46.195489 19.498096 87.691436 47.495362 123.287961 83.191876 35.696514 35.696514 63.59379 77.192462 83.191875 123.28796 20.198028 47.795332 30.497022 98.590372 30.497022 150.985255s-10.298994 103.189923-30.497022 150.985255c-19.498096 46.195489-47.495362 87.691436-83.191875 123.287961-35.696514 35.696514-77.192462 63.59379-123.287961 83.191875-47.795332 20.198028-98.590372 30.497022-150.985255 30.497022s-103.189923-10.298994-150.985255-30.497022c-46.195489-19.498096-87.691436-47.495362-123.28796-83.191875-35.696514-35.696514-77.192462-77.192462-123.28796-123.28796-20.198028-47.795332-30.497022-98.590372-30.497022-150.985255s10.298994-103.189923 30.497022-150.985255c19.498096-46.195489 47.495362-87.691436 83.191876-123.28796 35.696514-35.696514 77.192462-63.59379 123.28796-83.191876 47.795332-20.198028 98.590372-30.497022 150.985255-30.497022m0-59.994141c-247.375842 0-447.956254 200.580412-447.956254 447.956254s200.580412 447.956254 447.956254 447.956254 447.956254-200.580412 447.956254-447.956254-200.580412-447.956254-447.956254-447.956254z"
                   fill="#FF6600" opacity=".502"></path>
               <path
                   d="M432.457768 322.068548c-16.598379 0-29.997071 13.398692-29.997071 29.997071v319.968753c0 16.598379 13.398692 29.997071 29.997071 29.99707s29.997071-13.398692 29.99707-29.99707v-319.968753c0-16.498389-13.398692-29.997071-29.99707-29.997071zM592.442144 322.068548c-16.598379 0-29.997071 13.398692-29.99707 29.997071v319.968753c0 16.598379 13.398692 29.997071 29.99707 29.99707s29.997071-13.398692 29.997071-29.99707v-319.968753c0-16.498389-13.398692-29.997071-29.997071-29.997071z"
                   fill="#FF6600"></path>
             </svg>
           </el-icon>
-          <el-icon v-else>
+          <el-icon v-else-if="playerReady && !musicPlayerRef.isPlaying">
             <svg class="icon" viewBox="0 0 1024 1024" width="200"
                  height="200">
               <path
@@ -96,28 +96,34 @@
                   fill="#FF7B15"></path>
             </svg>
           </el-icon>
-          <span>{{ isPlaying ? '暂停音乐' : '播放音乐' }}</span>
+          <el-icon v-else>
+            <Loading />
+          </el-icon>
+          <span>{{ playerReady ? (musicPlayerRef.isPlaying ? '暂停音乐' : '播放音乐') : '加载中...' }}</span>
         </el-button>
       </div>
     </div>
-    <!-- 音频元素 -->
-    <audio ref="audioRef" :src="audioSource" @ended="playNext" @error="handleAudioError"></audio>
   </header>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, nextTick, inject } from 'vue';
 import { useRouter } from 'vue-router';
 import {
   Search,
   Sunny,
   Moon,
   ArrowDown,
+  Loading
 } from '@element-plus/icons-vue';
 import avatarImage from '@/assets/images/烈焰飞鸟.png';
 import { ElMessage } from 'element-plus';
 
 const router = useRouter();
+// 从父组件注入音乐播放器实例
+const musicPlayer = inject('musicPlayer');
+const musicPlayerRef = ref(null); // 存储实际的播放器实例
+const playerReady = ref(false);
 
 // 导航菜单项
 const navItems = ref([
@@ -137,22 +143,6 @@ const userAvatar = avatarImage;
 // 主题模式
 const darkMode = ref(false);
 
-// 音频元素引用
-const audioRef = ref(null);
-// 音乐播放状态
-const isPlaying = ref(false);
-// 音频源数组
-const audioSources = ref([
-  '/src/assets/images/慢慢-鹿晗.mp3',
-  '/src/assets/images/吹吹风-鹿晗.mp3',
-]);
-// 当前音频索引
-const currentAudioIndex = ref(0);
-// 当前音频源路径
-const audioSource = ref(audioSources.value[currentAudioIndex.value]);
-// 错误信息
-const errorMessage = ref('');
-
 const goHome = () => {
   router.push('/home');
 };
@@ -165,71 +155,23 @@ const gotoLogin = () => {
   router.push('/login');
 };
 
-const toggleMusic = async () => {
-  try {
-    if (isPlaying.value) {
-      audioRef.value.pause();
-    } else {
-      await audioRef.value.play();
-    }
-    isPlaying.value = !isPlaying.value;
-  } catch (error) {
-    console.error('播放音乐时出错:', error);
-    errorMessage.value = '播放音乐失败，请检查音频文件路径是否正确。';
-    ElMessage.error(errorMessage.value);
-  }
-};
-
-const playNext = async () => {
-  try {
-    currentAudioIndex.value = (currentAudioIndex.value + 1) % audioSources.value.length;
-    audioSource.value = audioSources.value[currentAudioIndex.value];
-    audioRef.value.src = audioSource.value;
-
-    // 等待音频加载完成
-    await new Promise((resolve) => {
-      audioRef.value.addEventListener('canplaythrough', resolve, { once: true });
-      audioRef.value.load();
-    });
-
-    await audioRef.value.play();
-  } catch (error) {
-    console.error('播放下一首音乐时出错:', error);
-    errorMessage.value = '播放下一首音乐失败，请检查音频文件路径是否正确。';
-    ElMessage.error(errorMessage.value);
-  }
-};
-
-const handleAudioError = () => {
-  const error = audioRef.value.error;
-  if (error) {
-    switch (error.code) {
-      case error.MEDIA_ERR_ABORTED:
-        errorMessage.value = '音频加载被中断';
-        break;
-      case error.MEDIA_ERR_NETWORK:
-        errorMessage.value = '网络错误导致音频加载失败';
-        break;
-      case error.MEDIA_ERR_DECODE:
-        errorMessage.value = '音频解码失败';
-        break;
-      case error.MEDIA_ERR_SRC_NOT_SUPPORTED:
-        errorMessage.value = '不支持的音频格式或文件路径错误';
-        break;
-      default:
-        errorMessage.value = '未知错误，音频加载失败';
-    }
-    console.error('音频错误:', errorMessage.value);
-    ElMessage.error(errorMessage.value);
+const toggleMusic = () => {
+  if (playerReady.value && musicPlayerRef.value) {
+    musicPlayerRef.value.toggleMusic();
   }
 };
 
 onMounted(() => {
-  if (!audioRef.value.canPlayType('audio/mpeg')) {
-    errorMessage.value = '当前浏览器不支持MP3格式音频播放';
-    console.error(errorMessage.value);
-    ElMessage.error(errorMessage.value);
-  }
+  // 等待DOM更新，确保注入的播放器实例已初始化
+  nextTick(() => {
+    if (musicPlayer && musicPlayer.value) {
+      musicPlayerRef.value = musicPlayer.value;
+      playerReady.value = true;
+    } else {
+      console.error('无法获取音乐播放器实例，请检查App.vue是否正确提供了实例');
+      ElMessage.error('音乐播放器初始化失败');
+    }
+  });
 });
 </script>
 

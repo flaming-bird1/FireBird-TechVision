@@ -12,7 +12,7 @@
       <!-- 左侧品牌展示区 -->
       <div class="brand-section">
         <div class="brand-content">
-          <h1 class="brand-title">烈焰飞鸟·梦工厂</h1>
+          <h1 class="brand-title">焰翼码栈</h1>
           <p class="brand-subtitle">展示我的技术探索之旅</p>
 
           <!-- 特色功能展示 -->
@@ -23,7 +23,7 @@
             </div>
             <div class="feature-item">
               <el-icon :size="20" color="#67C23A"><Cpu /></el-icon>
-              <span>机器学习实践</span>
+              <span>深度学习实践</span>
             </div>
             <div class="feature-item">
               <el-icon :size="20" color="#E6A23C"><DataAnalysis /></el-icon>
@@ -144,7 +144,7 @@
 
     <!-- 页脚 -->
     <div class="login-footer">
-      <span>© 2025 烈焰飞鸟·梦工厂 版权所有</span>
+      <span>© 2025 焰翼码栈 版权所有</span>
       <el-divider direction="vertical" />
       <el-link underline="never" @click="router.push('/privacy')">隐私政策</el-link>
       <el-divider direction="vertical" />

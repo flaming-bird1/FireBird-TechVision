@@ -1,23 +1,21 @@
 <template>
-  <div style="display: none;">
-    <audio ref="audioRef" :src="audioSource" @ended="playNext" @error="handleAudioError"></audio>
-  </div>
+  <!-- 音频元素 -->
+  <audio ref="audioRef" :src="audioSource" @ended="playNext" @error="handleAudioError"></audio>
 </template>
 
 <script setup>
-import { ref, onMounted, provide } from 'vue';
+import { ref, onMounted } from 'vue';
 import { ElMessage } from 'element-plus';
-
-// 音频源数组（保持原始路径格式）
-const audioSources = ref([
-  '/src/assets/images/慢慢-鹿晗.mp3',
-  '/src/assets/images/吹吹风-鹿晗.mp3',
-]);
 
 // 音频元素引用
 const audioRef = ref(null);
 // 音乐播放状态
 const isPlaying = ref(false);
+// 音频源数组
+const audioSources = ref([
+  '/src/assets/images/慢慢-鹿晗.mp3',
+  '/src/assets/images/吹吹风-鹿晗.mp3',
+]);
 // 当前音频索引
 const currentAudioIndex = ref(0);
 // 当前音频源路径
@@ -25,22 +23,11 @@ const audioSource = ref(audioSources.value[currentAudioIndex.value]);
 // 错误信息
 const errorMessage = ref('');
 
-// 播放/暂停音乐
 const toggleMusic = async () => {
-  console.log('MusicPlayer: toggleMusic 方法被调用');
-  console.log('audioRef:', audioRef.value);
   try {
-
     if (isPlaying.value) {
       audioRef.value.pause();
     } else {
-      // 确保音频加载完成
-      if (audioRef.value.readyState < 2) {
-        await new Promise((resolve) => {
-          audioRef.value.addEventListener('canplaythrough', resolve, { once: true });
-          audioRef.value.load();
-        });
-      }
       await audioRef.value.play();
     }
     isPlaying.value = !isPlaying.value;
@@ -51,14 +38,13 @@ const toggleMusic = async () => {
   }
 };
 
-// 播放下一首
 const playNext = async () => {
   try {
     currentAudioIndex.value = (currentAudioIndex.value + 1) % audioSources.value.length;
     audioSource.value = audioSources.value[currentAudioIndex.value];
     audioRef.value.src = audioSource.value;
 
-    // 重新加载并播放
+    // 等待音频加载完成
     await new Promise((resolve) => {
       audioRef.value.addEventListener('canplaythrough', resolve, { once: true });
       audioRef.value.load();
@@ -72,7 +58,6 @@ const playNext = async () => {
   }
 };
 
-// 处理音频错误
 const handleAudioError = () => {
   const error = audioRef.value.error;
   if (error) {
@@ -98,23 +83,20 @@ const handleAudioError = () => {
 };
 
 onMounted(() => {
-  if (!audioRef.value || !audioRef.value.canPlayType('audio/mpeg')) {
+  if (!audioRef.value.canPlayType('audio/mpeg')) {
     errorMessage.value = '当前浏览器不支持MP3格式音频播放';
     console.error(errorMessage.value);
     ElMessage.error(errorMessage.value);
   }
 });
 
-// 提供音乐播放器实例供其他组件使用
-const musicPlayer = {
+// 导出 toggleMusic 和 isPlaying 供外部使用
+defineExpose({
   toggleMusic,
-  isPlaying,
-  audioSource
-};
-
-provide('musicPlayer', musicPlayer);
+  isPlaying
+});
 </script>
 
 <style scoped>
-/* 组件不显示任何UI，仅作为功能提供者 */
+/* 可以为空，因为不需要样式 */
 </style>
