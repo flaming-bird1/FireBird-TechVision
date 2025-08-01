@@ -10,9 +10,14 @@ export default defineConfig({
     port: 5174,
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:5000', // 后端地址
+        target: 'http://127.0.0.1:5000', // flask后端地址
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+      '/spring': {
+        target: 'http://127.0.0.1:8080', // SpringBoot 后端地址
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/spring/, ''),
       },
     },
   },
