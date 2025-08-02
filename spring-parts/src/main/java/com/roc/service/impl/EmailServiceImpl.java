@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -15,7 +14,7 @@ import java.time.LocalDateTime;
 @Service
 // @Transactional // 添加事务注解
 
-public class EmailService implements com.roc.service.EmailService {
+public class EmailServiceImpl implements com.roc.service.EmailService {
     @Autowired
     private JavaMailSender mailSender;
     @Autowired

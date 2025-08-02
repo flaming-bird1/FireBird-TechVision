@@ -22,4 +22,6 @@ public interface EmailMapper {
             @Param("email") String email,
             @Param("verificationCode") String randomCaptchaNumber,
             @Param("expiresAt") LocalDateTime expiresAt);
+
+    void deleteByEmail(String email);
 }

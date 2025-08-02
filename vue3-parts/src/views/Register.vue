@@ -47,17 +47,41 @@
               @keyup.enter="handleRegister"
               class="register-form"
           >
-            <el-form-item prop="username">
+            <el-form-item prop="email">
               <el-input
-                  v-model="registerForm.username"
-                  placeholder="用户名"
+                  v-model="registerForm.email"
+                  placeholder="请输入QQ邮箱(10位数字@qq.com)"
                   size="large"
                   class="custom-input"
               >
                 <template #prefix>
-                  <el-icon><User /></el-icon>
+                  <el-icon><Message /></el-icon>
                 </template>
               </el-input>
+            </el-form-item>
+
+            <el-form-item prop="verificationCode">
+              <div class="captcha-input">
+                <el-input
+                    v-model="registerForm.verificationCode"
+                    placeholder="验证码"
+                    size="large"
+                    class="custom-input"
+                >
+                  <template #prefix>
+                    <el-icon><Key /></el-icon>
+                  </template>
+                </el-input>
+                <el-button
+                    type="primary"
+                    size="large"
+                    class="captcha-btn"
+                    :disabled="countdown > 0"
+                    @click="sendVerificationCode"
+                >
+                  {{ countdown > 0 ? `${countdown}秒后重试` : '获取验证码' }}
+                </el-button>
+              </div>
             </el-form-item>
 
             <el-form-item prop="password">
@@ -139,7 +163,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import {
@@ -147,14 +171,17 @@ import {
   Lock,
   MagicStick,
   Cpu,
-  DataAnalysis
+  DataAnalysis,
+  Message,
+  Key
 } from '@element-plus/icons-vue'
 import axios from 'axios'
 
 const router = useRouter()
 
 const registerForm = ref({
-  username: '',
+  email: '',
+  verificationCode: '',
   password: '',
   confirmPassword: ''
 })
@@ -162,12 +189,25 @@ const registerForm = ref({
 const registerFormRef = ref(null)
 const agreementChecked = ref(false)
 const loading = ref(false)
+const countdown = ref(0)
+let countdownTimer = null
+
+const validateEmail = (rule, value, callback) => {
+  const emailRegex = /^\d{10}@qq\.com$/
+  if (!value) {
+    callback(new Error('请输入邮箱'))
+  } else if (!emailRegex.test(value)) {
+    callback(new Error('请输入正确的QQ邮箱格式(10位数字@qq.com)'))
+  } else {
+    callback()
+  }
+}
 
 const validatePassword = (rule, value, callback) => {
   if (value === '') {
     callback(new Error('请输入密码'))
-  } else if (value.length < 6) {
-    callback(new Error('密码长度不能少于6位'))
+  } else if (value.length < 6 || value.length > 20) {
+    callback(new Error('密码长度必须为6-20位'))
   } else {
     if (registerForm.value.confirmPassword !== '') {
       registerFormRef.value.validateField('confirmPassword')
@@ -186,10 +226,22 @@ const validateConfirmPassword = (rule, value, callback) => {
   }
 }
 
+const validateVerificationCode = (rule, value, callback) => {
+  if (value === '') {
+    callback(new Error('请输入验证码'))
+  } else if (value.length !== 6) {
+    callback(new Error('验证码必须为6位数字'))
+  } else {
+    callback()
+  }
+}
+
 const registerRules = ref({
-  username: [
-    { required: true, message: '请输入用户名', trigger: 'blur' },
-    { min: 3, message: '用户名长度不能少于3位', trigger: 'blur' }
+  email: [
+    { required: true, validator: validateEmail, trigger: 'blur' }
+  ],
+  verificationCode: [
+    { required: true, validator: validateVerificationCode, trigger: 'blur' }
   ],
   password: [
     { required: true, validator: validatePassword, trigger: 'blur' }
@@ -198,6 +250,44 @@ const registerRules = ref({
     { required: true, validator: validateConfirmPassword, trigger: 'blur' }
   ]
 })
+
+// 发送验证码
+const sendVerificationCode = async () => {
+  try {
+    await registerFormRef.value.validateField('email')
+
+    const response = await axios.get('/spring/send-captcha', {
+      params: {
+        email: registerForm.value.email
+      }
+    })
+
+    if (response.data.code === 200) {
+      ElMessage.success('验证码发送成功')
+      startCountdown()
+    } else {
+      ElMessage.error(response.data.message || '验证码发送失败')
+    }
+  } catch (error) {
+    if (error.response) {
+      ElMessage.error(error.response.data?.message || '验证码发送失败')
+    } else if (error.message) {
+      ElMessage.error(error.message)
+    }
+  }
+}
+
+// 开始倒计时
+const startCountdown = () => {
+  countdown.value = 60
+  countdownTimer = setInterval(() => {
+    if (countdown.value <= 0) {
+      clearInterval(countdownTimer)
+      return
+    }
+    countdown.value--
+  }, 1000)
+}
 
 const handleRegister = async () => {
   try {
@@ -210,16 +300,16 @@ const handleRegister = async () => {
     }
 
     loading.value = true
-    const response = await axios.post('/api/register', {
-      username: registerForm.value.username,
-      password: registerForm.value.password
+    const response = await axios.post('/spring/register', {
+      email: registerForm.value.email,
+      password: registerForm.value.password,
+      verificationCode: registerForm.value.verificationCode
     })
 
     if (response.data.code === 200) {
       ElMessage.success('注册成功')
-      // 自动登录
-      localStorage.setItem('user', JSON.stringify(response.data.data))
-      await router.push('/home')
+      // localStorage.setItem('user', JSON.stringify(response.data.data))
+      await router.push('/login')
     } else {
       ElMessage.error(response.data.message || '注册失败')
     }
@@ -236,6 +326,13 @@ const handleRegister = async () => {
     loading.value = false
   }
 }
+
+// 组件卸载时清除定时器
+onBeforeUnmount(() => {
+  if (countdownTimer) {
+    clearInterval(countdownTimer)
+  }
+})
 </script>
 
 <style scoped>
@@ -410,6 +507,16 @@ const handleRegister = async () => {
   box-shadow: 0 0 0 1px #409EFF;
 }
 
+.register-page .register-card .form-section .form-container .register-form .captcha-input {
+  display: flex;
+  gap: 10px;
+}
+
+.register-page .register-card .form-section .form-container .register-form .captcha-input .captcha-btn {
+  width: 120px;
+  border-radius: 8px;
+}
+
 .register-page .register-card .form-section .form-container .register-form .form-agreement {
   margin-bottom: 20px;
   font-size: 14px;
@@ -498,6 +605,14 @@ const handleRegister = async () => {
 
   .register-page .register-footer .el-divider {
     display: none;
+  }
+
+  .register-page .register-card .form-section .form-container .register-form .captcha-input {
+    flex-direction: column;
+  }
+
+  .register-page .register-card .form-section .form-container .register-form .captcha-input .captcha-btn {
+    width: 100%;
   }
 }
 </style>

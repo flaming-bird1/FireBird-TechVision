@@ -13,7 +13,14 @@
             expires_at        = #{expiresAt}
         where email = #{email}
     </update>
+    <delete id="deleteByEmail">
+        delete
+        from email_verification
+        where email = #{email}
+    </delete>
     <select id="getCaptchaByEmail" resultType="com.roc.entity.EmailVerification">
-        select * from email_verification where email = #{email}
+        select *
+        from email_verification
+        where email = #{email}
     </select>
 </mapper>
