@@ -47,6 +47,7 @@ Thumbs.db
 # --- 图片/多媒体资源（按需忽略）---
 # --- 图片/多媒体资源（按需忽略）---
 **/images/*
+**/assets/*
 !**/images/
 !**/images/README.md  # 保留 README
 
