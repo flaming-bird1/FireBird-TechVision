@@ -7,4 +7,7 @@
         insert into users (username, password, email)
         values (#{username}, #{password}, #{email})
     </insert>
+    <select id="findByEmail" resultType="com.roc.entity.User">
+        select * from users where email = #{email}
+    </select>
 </mapper>

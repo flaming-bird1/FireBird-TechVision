@@ -75,10 +75,10 @@
               @keyup.enter="handleLogin"
               class="login-form"
           >
-            <el-form-item prop="username">
+            <el-form-item prop="email">
               <el-input
-                  v-model="loginForm.username"
-                  placeholder="用户名/邮箱"
+                  v-model="loginForm.email"
+                  placeholder="邮箱"
                   size="large"
                   class="custom-input"
               >
@@ -169,7 +169,7 @@ import axios from 'axios'
 const router = useRouter()
 
 const loginForm = ref({
-  username: '',
+  email: '',
   password: ''
 })
 
@@ -178,9 +178,9 @@ const rememberMe = ref(false)
 const loading = ref(false)
 
 const loginRules = ref({
-  username: [
-    { required: true, message: '请输入用户名', trigger: 'blur' },
-    { min: 3, message: '用户名长度不能少于3位', trigger: 'blur' }
+  email: [
+    { required: true, message: '请输入邮箱', trigger: 'blur' },
+    { type: 'email', message: '请输入正确的邮箱格式', trigger: ['blur', 'change'] }
   ],
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' },
@@ -194,26 +194,30 @@ const handleLogin = async () => {
     await loginFormRef.value.validate()
 
     loading.value = true
-    const response = await axios.post('/api/login', {
-      username: loginForm.value.username,
+    const response = await axios.post('/spring/login', {
+      email: loginForm.value.email,
       password: loginForm.value.password
     })
 
     if (response.data.code === 200) {
       ElMessage.success('登录成功')
-      localStorage.setItem('user', JSON.stringify(response.data.data))
+      // 存储token和用户信息
+      localStorage.setItem('token', response.data.data.token)
+      localStorage.setItem('userInfo', JSON.stringify(response.data.data.userInfo))
+
+      // 跳转到首页
       await router.push('/home')
     } else {
-      ElMessage.error(response.data.message || '登录失败')
+      ElMessage.error(response.data.msg || '登录失败')
     }
   } catch (error) {
     if (error.response) {
-      ElMessage.error(error.response.data?.message || '登录请求失败')
-    } else if (error.message) {
-      // 表单验证错误不显示消息
-      if (!error.message.includes('validation')) {
-        ElMessage.error(error.message)
-      }
+      // 处理HTTP错误响应
+      const errorMsg = error.response.data?.msg || '登录请求失败'
+      ElMessage.error(errorMsg)
+    } else if (error.message && !error.message.includes('validation')) {
+      // 表单验证错误不显示消息，其他错误显示
+      ElMessage.error(error.message)
     }
   } finally {
     loading.value = false

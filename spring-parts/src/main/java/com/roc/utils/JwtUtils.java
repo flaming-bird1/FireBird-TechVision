@@ -13,7 +13,7 @@ public class JwtUtils {
 
     // 在类加载的时候就生成一个强密钥
     private static final SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    private static Long expire = 43200000L;
+    private static Long expire = 43200000L; // 令牌有效期 12 小时
 
     /**
      * 生成JWT令牌

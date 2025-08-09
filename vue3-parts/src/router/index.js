@@ -44,6 +44,11 @@ const router = createRouter({
       component: () => import('@/views/ChineseChessGame.vue')
     },
     {
+      path:'/plants-zombies',
+      name:'PlantsVsZombies',
+      component: () => import('@/views/PlantsVsZombies.vue')
+    },
+    {
       path: '/note/:id',
       name: 'NoteDetail',
       component: () => import('@/views/NoteDetail.vue')

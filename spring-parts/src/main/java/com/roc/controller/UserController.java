@@ -1,6 +1,7 @@
 package com.roc.controller;
 
 
+import com.roc.entity.LoginDTO;
 import com.roc.entity.RegisterDTO;
 import com.roc.entity.Result;
 import com.roc.entity.User;
@@ -28,5 +29,16 @@ public class UserController {
     public Result register(@RequestBody RegisterDTO registerDto) {
         log.info("开始处理用户注册请求：{}", registerDto);
         return userService.register(registerDto);
+    }
+
+    /**
+     * 登录
+     *
+     * @return 登录结果
+     */
+    @PostMapping("/login")
+    public Result login(@RequestBody LoginDTO loginDTO) {
+        log.info("开始处理用户登录请求：{}", loginDTO);
+        return userService.login(loginDTO);
     }
 }
