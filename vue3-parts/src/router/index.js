@@ -34,6 +34,12 @@ const router = createRouter({
             component: () => import('@/views/Cifar10Classifier.vue')
         },
         {
+            path: '/ai-chat',
+            name: 'ai-chat',
+            component: () => import('@/views/AIChat.vue')
+        },
+        // 游戏
+        {
             path: '/gomoku-game',
             name: 'GomokuGame',
             component: () => import('@/views/GomokuGame.vue')
@@ -59,10 +65,11 @@ const router = createRouter({
             component: () => import('@/views/SpaceShooter.vue')
         },
         {
-            path: '/ai-chat',
-            name: 'ai-chat',
-            component: () => import('@/views/AIChat.vue')
+            path: '/zillionaire',
+            name: 'Zillionaire',
+            component: () => import('@/views/Zillionaire.vue')
         },
+        // 笔记
         {
             path: '/note/:id',
             name: 'NoteDetail',
