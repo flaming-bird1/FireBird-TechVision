@@ -14,6 +14,11 @@ const router = createRouter({
             component: () => import('@/views/Home.vue')
         },
         {
+            path:'/project-view',
+            name: 'project-view',
+            component: () => import('@/views/ProjectView.vue')
+        },
+        {
             path: '/404',
             name: '404',
             component: () => import('@/components/NotFoundView.vue')
@@ -23,51 +28,58 @@ const router = createRouter({
             name: 'love-heart',
             component: () => import('@/components/LoveHeart.vue')
         },
+        // AI
         {
             path: '/cnn-hand-write-number',
             name: 'cnn-hand-write-number',
-            component: () => import('@/views/CnnMnist.vue')
+            component: () => import('@/views/artificial_intelligence/CnnMnist.vue')
         },
         {
             path: '/cifar10-classifier',
             name: 'cifar10-classifier',
-            component: () => import('@/views/Cifar10Classifier.vue')
+            component: () => import('@/views/artificial_intelligence/Cifar10Classifier.vue')
         },
         {
             path: '/ai-chat',
             name: 'ai-chat',
-            component: () => import('@/views/AIChat.vue')
+            component: () => import('@/views/artificial_intelligence/AIChat.vue')
+        },
+        // 工具
+        {
+            path:'/GeoJson-to-shapefile',
+            name: 'GeoJson-to-shapefile',
+            component: () => import('@/views/artificial_intelligence/GeoJsonToShapefile.vue')
         },
         // 游戏
         {
             path: '/gomoku-game',
             name: 'GomokuGame',
-            component: () => import('@/views/GomokuGame.vue')
+            component: () => import('@/views/game/GomokuGame.vue')
         },
         {
             path: '/chinese-chess',
             name: 'ChineseChess',
-            component: () => import('@/views/ChineseChessGame.vue')
+            component: () => import('@/views/game/ChineseChessGame.vue')
         },
         {
             path: '/plants-zombies',
             name: 'PlantsVsZombies',
-            component: () => import('@/views/PlantsVsZombies.vue')
+            component: () => import('@/views/game/PlantsVsZombies.vue')
         },
         {
             path: '/maze-game',
             name: 'MazeGame',
-            component: () => import('@/views/MazeGame.vue')
+            component: () => import('@/views/game/MazeGame.vue')
         },
         {
             path: '/number-connection-game',
             name: 'NumberConnectionGame',
-            component: () => import('@/views/SpaceShooter.vue')
+            component: () => import('@/views/game/SpaceShooter.vue')
         },
         {
             path: '/zillionaire',
             name: 'Zillionaire',
-            component: () => import('@/views/Zillionaire.vue')
+            component: () => import('@/views/game/zillionaire.vue')
         },
         // 笔记
         {

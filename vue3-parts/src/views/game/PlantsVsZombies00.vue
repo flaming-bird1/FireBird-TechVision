@@ -6,7 +6,7 @@
       <button @click="startGame" class="start-button">开始游戏</button>
       <div class="game-intro">
         <p>种植植物抵御僵尸入侵</p>
-        <p>点击草地草地种植选中的植物</p>
+        <p>点击草地种植选中的植物</p>
       </div>
     </div>
 
@@ -96,7 +96,7 @@
                   :style="{ top: `${sun.offset}px` }"
                   @click="collectSun(rowIndex, colIndex, sunIndex)"
               >
-                <img src="./assets/plants/sun.png" alt="阳光" class="sun-image">
+                <img src="../assets/plants/sun.png" alt="阳光" class="sun-image">
               </div>
             </div>
           </div>
@@ -247,7 +247,7 @@ function startGame() {
 
 // 重置游戏
 function resetGame() {
-  sunCount.value = 10000;
+  sunCount.value = 100;
   currentWave.value = 1;
   selectedPlant.value = null;
 
@@ -300,10 +300,9 @@ function updatePlants(deltaTime) {
       const plant = lawn.value[row][col];
       if (!plant) continue;
 
-      // 处理樱桃炸弹倒计时 - 修复不触发问题
+      // 处理樱桃炸弹倒计时
       if (plant.isExplosive) {
         plant.armTime -= deltaTime;
-        // 确保armTime正确减少到0以下时触发爆炸
         if (plant.armTime <= 0) {
           explodePlant(row, col);
           lawn.value[row][col] = null;
@@ -478,26 +477,20 @@ function updateZombies(deltaTime) {
   for (let i = zombies.value.length - 1; i >= 0; i--) {
     const zombie = zombies.value[i];
 
-    // 检查前方路径上是否有阻挡性植物
-    const blockingPlant = getBlockingPlantInPath(zombie);
-    if (blockingPlant) {
-      // 有阻挡植物，尝试攻击它
+    // 检查是否有植物在正前方相邻格子，可以攻击
+    const adjacentPlant = getAdjacentPlant(zombie);
+
+    if (adjacentPlant) {
+      // 攻击植物
       zombie.lastAttack += deltaTime;
       if (zombie.lastAttack >= zombie.attackInterval) {
         zombie.lastAttack = 0;
-        attackPlant(zombie, blockingPlant.row, blockingPlant.col);
+        attackPlant(zombie, adjacentPlant.row, adjacentPlant.col);
       }
     } else {
-      // 检查是否有植物在正前方相邻格子，可以攻击
-      const adjacentPlant = getAdjacentPlant(zombie);
-      if (adjacentPlant) {
-        // 攻击植物
-        zombie.lastAttack += deltaTime;
-        if (zombie.lastAttack >= zombie.attackInterval) {
-          zombie.lastAttack = 0;
-          attackPlant(zombie, adjacentPlant.row, adjacentPlant.col);
-        }
-      } else {
+      // 检查前方路径上是否有阻挡性植物
+      const blockingPlant = getBlockingPlantInPath(zombie);
+      if (!blockingPlant) {
         // 没有阻挡，可以移动
         const moveDistance = zombie.speed * (deltaTime / 16); // 基于60fps的标准化移动
         zombie.position = Math.max(0, zombie.position - moveDistance);
@@ -529,20 +522,10 @@ function getAdjacentPlant(zombie) {
   // 正前方相邻格子（左边第一个格子）
   const targetCol = zombieCol - 1;
 
-  // 扩大攻击范围判断，允许稍微远一点的植物也能被攻击
   if (targetCol >= 0 && targetCol < gridCols.value) {
     const plant = lawn.value[zombie.row][targetCol];
     if (plant) {
       return { row: zombie.row, col: targetCol, plant };
-    }
-  }
-
-  // 检查更近的范围，修复距离过远就攻击的问题
-  const nearCol = Math.floor((100 - (zombie.position - cellWidthPercent.value * 0.3)) / cellWidthPercent.value);
-  if (nearCol >= 0 && nearCol !== zombieCol) {
-    const plant = lawn.value[zombie.row][nearCol];
-    if (plant) {
-      return { row: zombie.row, col: nearCol, plant };
     }
   }
 
@@ -551,12 +534,11 @@ function getAdjacentPlant(zombie) {
 
 // 检查僵尸前进路径上是否有阻挡性植物（如坚果墙）
 function getBlockingPlantInPath(zombie) {
-  // 计算僵尸当前所在的格子列和前方1.5个格子的位置
+  // 计算僵尸当前所在的格子列
   const zombieCol = Math.floor((100 - zombie.position) / cellWidthPercent.value);
-  const lookAheadCol = Math.floor((100 - (zombie.position - cellWidthPercent.value * 1.5)) / cellWidthPercent.value);
 
-  // 检查从当前格子左侧开始的所有格子，扩大检查范围
-  for (let col = Math.min(zombieCol - 1, lookAheadCol); col >= 0; col--) {
+  // 检查从当前格子左侧开始的所有格子
+  for (let col = zombieCol - 1; col >= 0; col--) {
     const plant = lawn.value[zombie.row][col];
     // 如果是能阻挡僵尸的植物
     if (plant && plant.blocksZombies) {
@@ -592,16 +574,15 @@ function attackPlant(zombie, row, col) {
 
 // 爆炸植物效果（如樱桃炸弹）- 增强效果范围和视觉反馈
 function explodePlant(row, col) {
-  // 清除周围更大范围内的僵尸，确保效果可靠
-  const explosionRange = 3; // 2格范围
+  // 清除周围3x3范围内的僵尸
   for (let i = zombies.value.length - 1; i >= 0; i--) {
     const zombie = zombies.value[i];
     const zombieCol = Math.floor((100 - zombie.position) / cellWidthPercent.value);
 
-    // 检查是否在爆炸范围内（行和列都在范围内）
+    // 检查是否在爆炸范围内
     if (
-        Math.abs(zombie.row - row) <= explosionRange &&
-        Math.abs(zombieCol - col) <= explosionRange
+        Math.abs(zombie.row - row) <= 1 &&
+        Math.abs(zombieCol - col) <= 2
     ) {
       // 直接消灭爆炸范围内的僵尸
       sunCount.value += zombie.reward;
@@ -609,6 +590,7 @@ function explodePlant(row, col) {
     }
   }
 
+  // 可以在这里添加爆炸动画效果
   console.log('樱桃炸弹爆炸了！');
 }
 

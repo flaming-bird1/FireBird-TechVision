@@ -5,7 +5,7 @@
       <div class="header-content">
         <div class="logo-title">
           <img
-              src="../assets/images/logo.png"
+              src="../../assets/images/logo.png"
               alt="Logo"
               class="logo-image"
           >

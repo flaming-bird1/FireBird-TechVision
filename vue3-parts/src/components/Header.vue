@@ -129,7 +129,7 @@ const playerReady = ref(false);
 const navItems = ref([
   { path: '/home', name: '首页' },
   { path: '/blogs', name: '博客', tag: { type: 'success', text: 'New' } },
-  { path: '/templates', name: '模板' },
+  { path: '/project-view', name: '项目' },
   { path: '/notes', name: '笔记' },
 ]);
 

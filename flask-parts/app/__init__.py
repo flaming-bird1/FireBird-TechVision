@@ -23,6 +23,7 @@ def _register_controllers():
     # 显式导入每个控制器文件
     from app.controller import predict_controller
     from app.controller import user_controller  # 如果有其他控制器
+    from app.controller import json_to_shp_controller
 
     # 如果需要，可以在这里执行模块的初始化代码
     # 例如：predict_controller.init_module(app)
