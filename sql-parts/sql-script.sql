@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS users
     username    VARCHAR(50) NOT NULL COMMENT '用户名',
     password    VARCHAR(20) NOT NULL COMMENT '密码',
     avatar_url  VARCHAR(255) COMMENT '头像链接',
-    title       VARCHAR(100) COMMENT '头衔/职位',
+    role        VARCHAR(20) DEFAULT 'user' COMMENT '角色: user, admin',
     bio         TEXT COMMENT '个人简介',
     email       VARCHAR(100) COMMENT '邮箱',
     blog_url    VARCHAR(255) COMMENT '博客链接',
@@ -39,7 +39,40 @@ CREATE TABLE IF NOT EXISTS users
     birthday    DATE COMMENT '出生日期（格式：YYYY-MM-DD）',
     gender      CHAR(2) COMMENT '性别',
     address     VARCHAR(100) COMMENT '用户住址',
-    created_at  DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    updated_at  DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间'
+    created_at  DATETIME    DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    updated_at  DATETIME    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间'
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
+
+
+-- 用户空间配额表
+ALTER TABLE user_quota
+    AUTO_INCREMENT = 1;
+DROP TABLE IF EXISTS user_quota;
+CREATE TABLE user_quota
+(
+    id          INT PRIMARY KEY AUTO_INCREMENT,
+    user_id     INT UNIQUE NOT NULL COMMENT '用户ID',
+    total_quota BIGINT DEFAULT 5368709120 COMMENT '总空间（字节），默认5G',
+    used_quota  BIGINT DEFAULT 0 COMMENT '已用空间（字节）',
+    FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
+);
+
+-- 文件信息表
+ALTER TABLE file_info
+    AUTO_INCREMENT = 1;
+DROP TABLE IF EXISTS file_info;
+CREATE TABLE file_info
+(
+    id                INT PRIMARY KEY AUTO_INCREMENT,
+    original_filename VARCHAR(200) NOT NULL COMMENT '原始文件名',
+    newFilename       VARCHAR(200) NOT NULL COMMENT '唯一文件名',
+    path              VARCHAR(500) NOT NULL COMMENT '服务器存储路径',
+    file_size         BIGINT       NOT NULL COMMENT '文件大小（字节）',
+    user_id           INT          NOT NULL COMMENT '上传者ID',
+    folder_id         INT      DEFAULT 0 COMMENT '所属文件夹',
+    upload_time       DATETIME DEFAULT CURRENT_TIMESTAMP,
+    download_count    INT      DEFAULT 0 COMMENT '下载次数',
+    remark            VARCHAR(200) COMMENT '备注',
+    FOREIGN KEY (user_id) REFERENCES users (user_id)
+);

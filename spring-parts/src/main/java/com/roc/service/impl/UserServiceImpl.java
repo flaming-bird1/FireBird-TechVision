@@ -8,9 +8,7 @@ import com.roc.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -126,7 +124,7 @@ public class UserServiceImpl implements UserService {
                     user.getUserId(),
                     user.getUsername(),
                     user.getAvatarUrl(),
-                    user.getTitle(),
+                    user.getRole(),
                     user.getBio(),
                     user.getEmail(),
                     user.getBlogUrl(),
