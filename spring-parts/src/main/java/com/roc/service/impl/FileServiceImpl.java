@@ -91,6 +91,10 @@ public class FileServiceImpl implements FileService {
             fileInfo.setUserId(userId);
             fileInfo.setRemark(remark);
             // 保存到数据库
+            /*
+            在 MyBatis 中，当传入的参数是一个对象（比如 fileInfo）时，
+            SQL 语句中的 #{xxx}实际上是访问该对象的属性（getter 方法），而不是直接访问局部变量。
+             */
             fileMapper.insertFile(fileInfo);
 
             // 7. 更新用户空间使用量

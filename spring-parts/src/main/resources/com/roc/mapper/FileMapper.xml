@@ -3,4 +3,18 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.roc.mapper.FileMapper">
+    <insert id="insertFile">
+        INSERT INTO file_info (original_filename,
+                               newFilename,
+                               path,
+                               file_size,
+                               user_id,
+                               remark)
+        VALUES (#{originalFilename},
+                #{newFilename},
+                #{path},
+                #{fileSize},
+                #{userId},
+                #{remark})
+    </insert>
 </mapper>

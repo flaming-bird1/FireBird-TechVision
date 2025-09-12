@@ -19,12 +19,18 @@ public class FileController {
 
     /**
      * 上传文件
+     * MultipartFile file
+     * Integer userId
+     * String remark
      *
-     * @param uploadFileDTO 文件上传信息
      * @return 文件上传结果
      */
+    // @RequestBody 只能解析 JSON/XML，无法处理 multipart/form-data
     @PostMapping("/file/upload")
-    public Result uploadFile(@RequestBody UploadFileDTO uploadFileDTO) {
+    public Result uploadFile(@RequestParam("file") MultipartFile file,       // 文件参数
+                             @RequestParam("userId") Integer userId,         // 其他字段
+                             @RequestParam(value = "remark", required = false) String remark) {
+        UploadFileDTO uploadFileDTO = new UploadFileDTO(file, userId, remark);
         log.info("开始处理文件上传请求：{}", uploadFileDTO);
         return fileService.uploadFile(uploadFileDTO);
     }
