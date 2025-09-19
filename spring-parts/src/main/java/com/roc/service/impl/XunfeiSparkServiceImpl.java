@@ -2,9 +2,9 @@ package com.roc.service.impl;
 
 import com.roc.config.XunfeiConfig;
 import com.roc.entity.Result;
-import com.roc.entity.XunfeiMessage;
-import com.roc.entity.XunfeiRequest;
-import com.roc.entity.XunfeiResponse;
+import com.roc.entity.aichat.XunfeiMessage;
+import com.roc.entity.aichat.XunfeiRequest;
+import com.roc.entity.aichat.XunfeiResponse;
 import com.roc.service.XunfeiSparkService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

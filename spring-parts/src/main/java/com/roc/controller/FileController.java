@@ -1,12 +1,11 @@
 package com.roc.controller;
 
 import com.roc.entity.Result;
-import com.roc.entity.UploadFileDTO;
+import com.roc.entity.filemanage.UploadFileDTO;
 import com.roc.service.FileService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;

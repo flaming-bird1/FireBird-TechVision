@@ -6,7 +6,7 @@
     <update id="updateUserQuota">
         update user_quota set used_quota = #{usedQuota} where user_id = #{userId}
     </update>
-    <select id="selectByUserId" resultType="com.roc.entity.UserQuota">
+    <select id="selectByUserId" resultType="com.roc.entity.filemanage.UserQuota">
         select * from user_quota where user_id = #{userId}
     </select>
 </mapper>

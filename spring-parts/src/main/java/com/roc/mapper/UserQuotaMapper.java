@@ -1,6 +1,6 @@
 package com.roc.mapper;
 
-import com.roc.entity.UserQuota;
+import com.roc.entity.filemanage.UserQuota;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

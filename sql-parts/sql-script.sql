@@ -76,3 +76,16 @@ CREATE TABLE file_info
     remark            VARCHAR(200) COMMENT '备注',
     FOREIGN KEY (user_id) REFERENCES users (user_id)
 );
+
+-- 单词表
+ALTER TABLE words
+    AUTO_INCREMENT = 1;
+DROP TABLE IF EXISTS words;
+CREATE TABLE words
+(
+    id          INT AUTO_INCREMENT PRIMARY KEY COMMENT '唯一标识',
+    word        VARCHAR(100) NOT NULL COMMENT '英文单词',
+    translation TEXT         NOT NULL COMMENT '中文翻译',
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4 COMMENT ='单词表';

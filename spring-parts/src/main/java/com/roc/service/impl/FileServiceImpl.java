@@ -1,10 +1,10 @@
 package com.roc.service.impl;
 
 import com.roc.config.UploadConfig;
-import com.roc.entity.FileInfo;
+import com.roc.entity.filemanage.FileInfo;
 import com.roc.entity.Result;
-import com.roc.entity.UploadFileDTO;
-import com.roc.entity.UserQuota;
+import com.roc.entity.filemanage.UploadFileDTO;
+import com.roc.entity.filemanage.UserQuota;
 import com.roc.mapper.FileMapper;
 import com.roc.mapper.UserQuotaMapper;
 import com.roc.service.FileService;
