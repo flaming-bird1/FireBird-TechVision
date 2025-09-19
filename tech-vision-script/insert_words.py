@@ -14,7 +14,7 @@ def import_words_from_json():
 
     # JSON文件路径（根据你的图片结构）
     # json_file = r'E:\codefile\code-space-local\project-practice\FireBird-TechVision\tech-vision-script\output\merged_vocabulary.json'
-    json_file = 'output/merged_vocabulary.json'
+    json_file = 'assets/output/merged_vocabulary.json'
     try:
         # 读取JSON文件
         with open(json_file, 'r', encoding='utf-8') as f:

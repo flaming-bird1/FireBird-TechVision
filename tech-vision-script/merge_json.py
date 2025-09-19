@@ -87,7 +87,7 @@ def merge_json_files(file_list, output_file):
 
 def main():
     # JSON文件所在的目录
-    json_dir = "json"
+    json_dir = "assets/json"
 
     # 文件列表
     file_names = [
@@ -116,7 +116,7 @@ def main():
         return
 
     # 输出文件名（保存在当前目录）
-    output_file = "output/merged_vocabulary_json.json"
+    output_file = "assets/output/merged_vocabulary_json.json"
 
     # 执行合并
     merge_json_files(existing_files, output_file)
