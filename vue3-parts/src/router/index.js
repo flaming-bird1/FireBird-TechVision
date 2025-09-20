@@ -14,7 +14,7 @@ const router = createRouter({
             component: () => import('@/views/Home.vue')
         },
         {
-            path:'/project-view',
+            path: '/project-view',
             name: 'project-view',
             component: () => import('@/views/ProjectView.vue')
         },
@@ -46,7 +46,7 @@ const router = createRouter({
         },
         // 工具
         {
-            path:'/GeoJson-to-shapefile',
+            path: '/GeoJson-to-shapefile',
             name: 'GeoJson-to-shapefile',
             component: () => import('@/views/artificial_intelligence/GeoJsonToShapefile.vue')
         },
@@ -87,6 +87,32 @@ const router = createRouter({
             name: 'NoteDetail',
             component: () => import('@/views/NoteDetail.vue')
         },
+        // 地理信息系统
+        {
+            path: '/geo-information-system01',
+            name: 'GeoInformationSystem01',
+            component: () => import('@/components/geoserver/GeoServerWMSDemo.vue')
+        },
+        {
+            path: '/geo-information-system02',
+            name: 'GeoInformationSystem02',
+            component: () => import('@/components/geoserver/GeoServer02.vue')
+        },
+        // // 地理信息系统 - 父路由
+        // {
+        //     path: '/geoserver',
+        //     name: 'GeoServer',
+        //     component: () => import('@/components/layout/GeoServerLayout.vue'), // 创建布局组件
+        //     redirect: '/geoserver/demo', // 默认重定向到第一个子路由
+        //     children: [
+        //         {
+        //             path: 'demo',
+        //             name: 'GeoServerDemo',
+        //             component: () => import('@/components/geoserver/GeoServerWMSDemo.vue')
+        //         },
+        //
+        //     ]
+        // },
         {
             path: '/login',
             name: 'Login',
@@ -97,6 +123,11 @@ const router = createRouter({
             name: 'Register',
             component: () => import('@/views/Register.vue')
         },
+        // 通配符路由，确保放在最后
+        {
+            path: '/:pathMatch(.*)*',
+            redirect: '/404'
+        }
     ],
 })
 
