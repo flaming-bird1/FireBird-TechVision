@@ -89,3 +89,24 @@ CREATE TABLE words
     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT ='单词表';
+
+-- 单词收藏表
+ALTER TABLE user_word_collection
+    AUTO_INCREMENT = 1;
+DROP TABLE IF EXISTS user_word_collection;
+CREATE TABLE user_word_collection
+(
+    id         INT AUTO_INCREMENT PRIMARY KEY COMMENT '唯一标识',
+    user_id    INT NOT NULL COMMENT '用户ID',
+    word_id    INT NOT NULL COMMENT '单词ID',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '收藏时间',
+
+    -- 唯一约束，防止重复收藏
+    UNIQUE KEY uk_user_word (user_id, word_id),
+
+    -- 外键约束（可选，确保数据完整性）
+    FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE,
+    FOREIGN KEY (word_id) REFERENCES words (id) ON DELETE CASCADE
+
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4 COMMENT ='用户单词收藏表';

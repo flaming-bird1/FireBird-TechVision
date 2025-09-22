@@ -113,6 +113,31 @@ const router = createRouter({
         //
         //     ]
         // },
+        // 单词学习系统
+        {
+            path: '/word-study-system',
+            name: 'WordStudySystem',
+            component: () => import('@/views/WordLayout.vue'), // 布局组件
+            redirect: '/word-study-system/home',
+            children: [
+                {
+                    path: 'home',
+                    name: 'WordStudySystemHome',
+                    component: () => import('@/components/word/WordLearningHome.vue'),
+                    meta: {
+                        title: '单词学习系统'
+                    }
+                },
+                {
+                    path: 'learn',
+                    name: 'WordStudySystemLearning',
+                    component: () => import('@/components/word/WordLearning.vue'),
+                    meta: {
+                        title: '单词学习系统'
+                    }
+                },
+            ]
+        },
         {
             path: '/login',
             name: 'Login',

@@ -15,7 +15,7 @@ public class WordServiceImpl implements WordService {
     private WordMapper wordMapper;
 
     /**
-     * 获取多个随机单词
+     * 获取多个随机单词， num值为空时，返回所有单词。
      * @param num 单词数量
      * @return 随机单词列表结果
      */

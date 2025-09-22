@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.roc</groupId>
-    <artifactId>spring-parts</artifactId>
+    <artifactId>techvision-spring-parts</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>spring-parts</name>
     <description>spring-parts</description>
