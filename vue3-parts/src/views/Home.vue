@@ -18,7 +18,9 @@
         <el-card class="profile-card" shadow="hover">
           <div class="profile-content">
             <div class="avatar-wrapper">
+              <!--              <el-avatar :size="80" src="../assets/images/烈焰飞鸟.png" />-->
               <el-avatar :size="80" :src="avatarUrl"/>
+              <!--              <img src="../assets/images/logo.png" alt="Logo" class="logo-img"/>-->
               <div class="online-dot"></div>
             </div>
             <div class="profile-info">
@@ -163,7 +165,7 @@ const projects = [
     description: '使用vue3+element-plus开发了一个具有404页面效果的网站',
     icon: Warning,
     iconColor: '#67C23A',
-    tags: ['前端','vue3', 'element-plus'],
+    tags: ['前端', 'vue3', 'element-plus'],
     date: '2025-7-15'
   },
   {

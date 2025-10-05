@@ -97,22 +97,18 @@ const router = createRouter({
             path: '/geo-information-system02',
             name: 'GeoInformationSystem02',
             component: () => import('@/components/geoserver/GeoServer02.vue')
+            // component: () => import('@/components/geoserver/LayerControl02_01.vue')
         },
-        // // 地理信息系统 - 父路由
-        // {
-        //     path: '/geoserver',
-        //     name: 'GeoServer',
-        //     component: () => import('@/components/layout/GeoServerLayout.vue'), // 创建布局组件
-        //     redirect: '/geoserver/demo', // 默认重定向到第一个子路由
-        //     children: [
-        //         {
-        //             path: 'demo',
-        //             name: 'GeoServerDemo',
-        //             component: () => import('@/components/geoserver/GeoServerWMSDemo.vue')
-        //         },
-        //
-        //     ]
-        // },
+        {
+            path: '/c05-geoserver',
+            name: 'GeoInformationSystem03',
+            component: () => import('@/components/geoserver/C05GeoServer.vue')
+        },
+        {
+            path: '/login01',
+            name: 'login01',
+            component: () => import('@/views/login/Login01.vue')
+        },
         // 单词学习系统
         {
             path: '/word-study-system',

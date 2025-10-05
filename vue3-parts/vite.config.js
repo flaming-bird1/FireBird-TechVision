@@ -1,38 +1,38 @@
-import { fileURLToPath, URL } from 'node:url'
+import {fileURLToPath, URL} from 'node:url'
 
-import { defineConfig } from 'vite'
+import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
 export default defineConfig({
-  server: {
-    port: 5174,
-    proxy: {
-      '/api': {
-        target: 'http://127.0.0.1:5000', // flask后端地址
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
-      },
-      '/spring': {
-        target: 'http://127.0.0.1:8081', // SpringBoot 后端地址
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/spring/, ''),
-      },
-      '/geoserver': {
-        target: 'http://localhost:8080',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/geoserver/, '')
-      }
+    server: {
+        port: 5174,
+        proxy: {
+            '/api': {
+                target: 'http://127.0.0.1:5000', // flask后端地址
+                changeOrigin: true,
+                rewrite: (path) => path.replace(/^\/api/, ''),
+            },
+            '/spring': {
+                target: 'http://127.0.0.1:8081', // SpringBoot 后端地址
+                changeOrigin: true,
+                rewrite: (path) => path.replace(/^\/spring/, ''),
+            },
+            '/geoserver': {
+                target: 'http://localhost:8080',
+                changeOrigin: true,
+                rewrite: (path) => path.replace(/^\/geoserver/, '')
+            }
+        },
     },
-  },
-  plugins: [
-    vue(),
-    vueDevTools(),
-  ],
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+    plugins: [
+        vue(),
+        vueDevTools(),
+    ],
+    resolve: {
+        alias: {
+            '@': fileURLToPath(new URL('./src', import.meta.url))
+        },
     },
-  },
 })

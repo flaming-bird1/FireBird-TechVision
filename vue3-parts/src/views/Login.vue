@@ -169,8 +169,8 @@ import axios from 'axios'
 const router = useRouter()
 
 const loginForm = ref({
-  email: '',
-  password: ''
+  email: '2739967874@qq.com',
+  password: '123456'
 })
 
 const loginFormRef = ref(null)
